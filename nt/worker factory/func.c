@@ -1,3 +1,68 @@
+VOID __stdcall __noreturn ExpWorkerFactoryManagerThread(VOID *Context)
+{
+  PLIST_ENTRY v1; // rax
+  PLIST_ENTRY v2; // rbx
+  _LIST_ENTRY *Flink; // rdi
+  unsigned int v4; // er8
+  unsigned int Blink; // eax
+  char v6; // di
+  _KLOCK_QUEUE_HANDLE LockHandle; // [rsp+20h] [rbp-28h] BYREF
+
+  memset(&LockHandle, 0, sizeof(LockHandle));
+  while ( 1 )
+  {
+    while ( 1 )
+    {
+      v1 = KeRemoveQueue(&ExpWorkerFactoryManagerQueue, 0, 0i64);
+      if ( v1 != (PLIST_ENTRY)&ExpWorkerFactoryThreadCreationBlock )
+        break;
+      ExpWorkerFactoryDeferredThreadCreation();
+      KeRegisterObjectNotification(
+        &ExpWorkerFactoryThreadCreationTimer,
+        &ExpWorkerFactoryManagerQueue,
+        &ExpWorkerFactoryThreadCreationBlock);
+    }
+    if ( !LODWORD(v1[3].Flink) )
+      break;
+    v2 = v1 - 29;
+    Flink = v1[-28].Flink;
+    KeAcquireInStackQueuedSpinLock((UINT64 *)Flink, &LockHandle);
+    if ( !LODWORD(v2[19].Flink) )
+    {
+      v4 = (unsigned int)v2[18].Flink;
+      Blink = (unsigned int)v2[17].Blink;
+      if ( v4 > Blink )
+        KeTimeOutQueueWaiters((_DISPATCHER_HEADER *)Flink->Blink, -(__int64)v2[7].Flink, v4 - Blink);
+    }
+    if ( BYTE1(Flink[2].Flink) )
+    {
+      v6 = 1;
+    }
+    else
+    {
+      v6 = 0;
+      KeRegisterObjectNotification(&v2[20].Blink, &ExpWorkerFactoryManagerQueue, (_KWAIT_BLOCK *)&v2[29]);
+    }
+    KeReleaseInStackQueuedSpinLockFromDpcLevel(&LockHandle);
+    __writecr8(LockHandle.OldIrql);
+    if ( v6 )
+LABEL_14:
+      ObfDereferenceObjectWithTag(v2, 0x746C6644ui64);
+  }
+  v2 = (PLIST_ENTRY)((char *)v1 - 520);
+  KeAcquireInStackQueuedSpinLock((UINT64 *)v1[-32].Blink, &LockHandle);
+  LODWORD(v2[19].Blink) &= ~0x400u;
+  
+  if ( ((__int64)v2[19].Blink & 0x200) != 0 && (unsigned __int8)ExpTryEnterWorkerFactoryAwayMode((_EX_WORKER_FACTORY *)v2) ) {
+    ExpWorkerFactoryCheckCreate((_EX_WORKER_FACTORY *)v2, &LockHandle, 0);
+  }
+  else {
+    KeReleaseInStackQueuedSpinLockFromDpcLevel(&LockHandle);
+    __writecr8(LockHandle.OldIrql);
+  }
+  goto LABEL_14;
+}
+
 NTSTATUS __stdcall ExpWorkerFactoryInitialization()
 {
   int Timeout; 
