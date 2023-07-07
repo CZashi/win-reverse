@@ -1,3 +1,21 @@
+
+/*
+Pico Routines
+
+- Create Pico processes and threads: PspCreatePicoProcess, PspCreatePicoThread
+- Get and set PicoContext pointer (From EPROCESS & ETHREAD) : PspGetPicoProcessContext, PspGetPicoThreadContext
+- Get and set CPU CONTEXT structure: PspGetContextThreadInternal, PspSetContextThreadInternal
+- Destroy Pico processes and threads: PspTerminateThreadByPointer, PspTerminatePicoProcess
+- Resume and suspend Pico processes and threads: PsResumeThread, PsSuspendThread
+- Set user-mode FS and GS segment for Pico threads: PspSetPicoThreadDescriptorBase
+*/
+
+// • Pico Providers also “register” with PatchGuard, providing it with their internal list of system call handlers Essentially, this means that the Linux system calls are protected by PatchGuard, just like the NT ones
+// Touching to PspPicoRegistrationDisabled / Force Unregister / Patching the callbacks (PspPicoProviderRoutines) 
+  // / attempting to register a “fake” Pico Provider, or modifying key Pico Provider state  -> triggers Patchguard
+
+
+
 typedef struct _PS_PICO_ROUTINES {
 		SIZE_T Size;
 		PPS_PICO_CREATE_PROCESS CreateProcess;
