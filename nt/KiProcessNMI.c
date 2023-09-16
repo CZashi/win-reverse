@@ -1,3 +1,5 @@
+// very intresting function for offensive purposes 
+
 char __fastcall KiProcessNMI(_KTRAP_FRAME *TrapFrame, _KEXCEPTION_FRAME *KernelExceptionFrame)
 {
   char NmiServiceResult;
