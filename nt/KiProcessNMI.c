@@ -22,7 +22,7 @@ char __fastcall KiProcessNMI(_KTRAP_FRAME *TrapFrame, _KEXCEPTION_FRAME *KernelE
       NmiListHead = KiNmiCallbackListHead;
       NmiServiceResult = 0;
       if ( !KiNmiCallbackListHead )
-        goto hal_service_nmi;
+        goto HalServiceNmi;
       do 
       {
         LOBYTE(Handled) = NmiServiceResult;
