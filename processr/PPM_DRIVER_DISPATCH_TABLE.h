@@ -1,4 +1,4 @@
-https://www.geoffchappell.com/studies/windows/km/ntoskrnl/inc/ntos/procpowr/ppm_driver_dispatch_table.htm (goat)
+// https://www.geoffchappell.com/studies/windows/km/ntoskrnl/inc/ntos/procpowr/ppm_driver_dispatch_table.htm (goat)
 
 struct PPM_DRIVER_DISPATCH_TABLE
 {
