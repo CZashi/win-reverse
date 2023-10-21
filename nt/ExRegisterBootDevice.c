@@ -1,7 +1,7 @@
 // no idea of what is this but looks like an executive based function to register a "Boot Device"? Just like extension hosts or ExRegisterCallback
 // a more internal aspect of the function show us the _EX_BOOT_DEVICE_REGISTRATION structure to register the boot device and all registered boot devices are stored in nt!ExBootDeviceList
 
-typedef struct _EX_BOOT_DEVICE_REGISTRATION
+typedef struct _EX_BOOT_DEVICE_REGISTRATION {
     USHORT Version;
     PVOID DriverObject;
     PVOID DeviceObject;
