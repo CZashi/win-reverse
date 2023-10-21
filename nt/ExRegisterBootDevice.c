@@ -2,11 +2,11 @@
 // a more internal aspect of the function show us the _EX_BOOT_DEVICE_REGISTRATION structure to register the boot device and all registered boot devices are stored in nt!ExBootDeviceList
 
 typedef struct _EX_BOOT_DEVICE_REGISTRATION
-    USHORT Version
-    PVOID DriverObject 
-    PVOID DeviceObject
-    PVOID IsBootDeviceReady
-    PVOID Context 
+    USHORT Version;
+    PVOID DriverObject;
+    PVOID DeviceObject;
+    PVOID IsBootDeviceReady;
+    PVOID Context;
 } EX_BOOT_DEVICE_REGISTRATION, *PEX_BOOT_DEVICE_REGISTRATION;
 
 
