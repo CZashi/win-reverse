@@ -1,3 +1,13 @@
+// advapi32!RegNotifyChangeKeyValue -> nt!NtNotifyChangeKey -> nt!NtNotifyChangeMultipleKeys
+
+// https://learn.microsoft.com/en-us/windows/win32/api/winreg/nf-winreg-regnotifychangekeyvalue
+// used to notifies the caller about changes to the attributes or contents of a specified registry key.
+// used internally in the kernel for some features like WHEA, LSA, PatchGuard (License checking).
+
+// maybe there is something to do around this 
+
+
+
 struct _CM_KEY_SECURITY_CACHE
 {
     ULONG Cell;                                                             //0x0
