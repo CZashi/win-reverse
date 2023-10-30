@@ -1,3 +1,6 @@
+// it's exported by the win11 kernel, maybe we can achieve some syscall interception tech like AltSyscall, Tracepoints (protected now) or ETW based hooking
+
+
 __int64 __fastcall PsRegisterSyscallProvider(__int64 a1, __int64 a2, __int64 *a3)
 {
   __int64 Pool2; // rax
