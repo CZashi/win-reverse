@@ -1,3 +1,26 @@
+/*
+
+Once executing on the ISR stack, the functions KiInterruptDispatch() and KiChainedDispatch() propagate execution to the next stage by calling 
+KiInterruptSubDispatch() or KiScanInterruptObjectList() respectively. KiInterruptSubDispatch() calls KiCallInterruptServiceRoutine() for a single KINTERRUPT structure. 
+KiScanInterruptObjectList() iterates through all the KINTERRUPT objects registered for a single vector using the list at KINTERRUPT.InterruptListEntry 
+and calls KiCallInterruptServiceRoutine() for each KINTERRUPT structure in the chain. 
+
+KiCallInterruptServiceRoutine() performs the following tasks:
+
+- Marks the interrupt as active in KINTERRUPT.IsrDpcStats.IsrActive.
+- Records the ISR start time in KINTERRUPT.IsrDpcStats.IsrTimeStart.
+- Acquires the interrupt spinlock in KINTERRUPT.ActualLock.
+- Calls the driver registered ISR in KINTERRUPT.ServiceRoutine.
+- Records the ISR duration in KINTERRUPT.IsrDpcStats.IsrTime.
+- If the ISR was interrupted by another one at a higher IRQL, it adjusts the IsrTime for accurate time accounting.
+- Marks the interrupt as inactive in KINTERRUPT.IsrDpcStats.IsrActive.
+- Increments the interrupt instance counter in IsrCount.
+
+The driver registered ISR can tell the caller KiCallInterruptServiceRoutine() if it claimed the interrupt by returning TRUE.
+This becomes important in the case of shared interrupts where the decision to call the ISR in the next KINTERRUPT in the chain depends on whether the current ISR has claimed the interrupt or not.
+
+*/
+
 UINT8 __fastcall KiCallInterruptServiceRoutine(_KINTERRUPT *Interrupt, UINT8 AcquireSpinlock)
 {
   _BYTE *RedirectObject; // r9
