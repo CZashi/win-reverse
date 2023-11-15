@@ -50,35 +50,35 @@ NTSTATUS __stdcall PsRegisterPicoProvider(PS_PICO_PROVIDER_ROUTINES *ProviderRou
   NTSTATUS result; // eax
 
   if ( *(_QWORD *)ProviderRoutines != 88i64 || *(_QWORD *)PicoRoutines != 96i64 )
-    return -1073741820;
+    return STATUS_INFO_LENGTH_MISMATCH;
   if ( (ProviderRoutines[18] & 0xFFE00000) != 0 || (ProviderRoutines[19] & 0xFFE00000) != 0 )
-    return -1073741811;
+    return STATUS_INVALID_PARAMETER;
   
   result = 0;
   if ( PspPicoRegistrationDisabled )
     return -1073741431;
   
   PspPicoProviderRoutines = *(_OWORD *)ProviderRoutines;
-  xmmword_140C1DE50 = *((_OWORD *)ProviderRoutines + 1);
-  xmmword_140C1DE60 = *((_OWORD *)ProviderRoutines + 2);
-  xmmword_140C1DE70 = *((_OWORD *)ProviderRoutines + 3);
-  xmmword_140C1DE80 = *((_OWORD *)ProviderRoutines + 4);
-  qword_140C1DE90 = *((_QWORD *)ProviderRoutines + 10);
+  xmmword_140C1DE50 = ProviderRoutines.DispatchSystemCall;
+  xmmword_140C1DE60 = ProviderRoutines.ExitThread;
+  xmmword_140C1DE70 = ProviderRoutines.ExitProcess;
+  xmmword_140C1DE80 = ProviderRoutines.DispatchException;
+  qword_140C1DE90 = ProviderRoutines.OpenThread;
   
   *(_QWORD *)&PspPicoProviderRanges = _mm_srli_si128((__m128i)xmmword_140C1DE70, 8).m128i_u64[0];
   
-  *((_QWORD *)PicoRoutines + 1) = PspCreatePicoProcess;
-  *((_QWORD *)PicoRoutines + 2) = PspCreatePicoThread;
-  *((_QWORD *)PicoRoutines + 3) = PspGetPicoProcessContext;
-  *((_QWORD *)PicoRoutines + 4) = PspGetPicoThreadContext;
-  *((_QWORD *)PicoRoutines + 5) = PspPicoGetContextThreadEx;
-  *((_QWORD *)PicoRoutines + 6) = PspPicoSetContextThreadEx;
-  *((_QWORD *)PicoRoutines + 7) = PspTerminateThreadByPointer;
-  *((_QWORD *)PicoRoutines + 8) = PsResumeThread;
-  *((_QWORD *)PicoRoutines + 9) = PspSetPicoThreadDescriptorBase;
-  *((_QWORD *)PicoRoutines + 10) = PsSuspendThread;
-  *((_QWORD *)PicoRoutines + 11) = PspTerminatePicoProcess;
-  *(_QWORD *)PicoRoutines = 96i64;
+  PicoRoutines.CreateProcess = PspCreatePicoProcess;
+  PicoRoutines.CreateThread = PspCreatePicoThread;
+  PicoRoutines.GetProcessContext = PspGetPicoProcessContext;
+  PicoRoutines.GetThreadContext = PspGetPicoThreadContext;
+  PicoRoutines.GetContextThreadInternal = PspPicoGetContextThreadEx;
+  PicoRoutines.SetContextThreadInternal = PspPicoSetContextThreadEx;
+  PicoRoutines.TerminateThread = PspTerminateThreadByPointer;
+  PicoRoutines.ResumeThread = PsResumeThread;
+  PicoRoutines.SetThreadDescriptorBase = PspSetPicoThreadDescriptorBase;
+  PicoRoutines.SuspendThread = PsSuspendThread;
+  PicoRoutines.TerminateProcess = PspTerminatePicoProcess;
+  PicoRoutines = 96i64;
   
   return result;
 }
