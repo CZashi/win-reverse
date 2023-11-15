@@ -1,1 +1,1 @@
-
+- it will contain windbg scripts and probably some C code to dump symbols on userland and kernel land
