@@ -1,5 +1,5 @@
 __int64 __fastcall IommuRegisterInterfaceStateChangeCallback(
-        void (__fastcall *a1)(__int64, __int64),
+        void (*CallbackRoutine)(struct _IOMMU_INTERFACE_STATE_CHANGE* arg1, void* arg2);,
         __int64 a2,
         __int64 a3,
         _DWORD *a4)
