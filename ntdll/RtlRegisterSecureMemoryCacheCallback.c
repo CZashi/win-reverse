@@ -1,5 +1,6 @@
 // https://learn.microsoft.com/en-us/windows/win32/api/winnt/nc-winnt-psecure_memory_cache_callback
-// RtlRegisterSecureMemoryCacheCallback function is to monitors changes about secured memory range (nt!MmSecureVirtualMemory) like free/mem prot., getting through RtlpSecMemListHead linked list is ez, just search for PsecureMemoryCacheCallback in sec and return a ptr to the undoc struct containing entries :
+// RtlRegisterSecureMemoryCacheCallback function is to monitors changes about secured memory range (nt!MmSecureVirtualMemory) like free/mem prot.
+// getting through RtlpSecMemListHead linked list is ez, just search for PsecureMemoryCacheCallback in sec and return a ptr to the undoc struct containing entries :
 /*
 typedef struct _secure_mem_item {
     LIST_ENTRY                    lists;
