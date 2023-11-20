@@ -1,3 +1,15 @@
+/*
+all callbacks are stored in struct _IOMMU_INTERFACE_CALLBACK_RECORD and all entries of it are stored in IommuInterfaceStateChangeCallbackListHead
+
+struct _IOMMU_INTERFACE_CALLBACK_RECORD {
+    struct _LIST_ENTRY ListEntry;                                          
+    VOID (*CallbackRoutine)(struct _IOMMU_INTERFACE_STATE_CHANGE* arg1, VOID* arg2); 
+    VOID* CallbackContext;                                               
+    struct _IOMMU_DMA_DEVICE* DmaDevice;                                    
+    struct _IOMMU_INTERFACE_STATE_CHANGE LastReportedState;              
+} IOMMU_INTERFACE_CALLBACK_RECORD, *PIOMMU_INTERFACE_CALLBACK_RECORD;
+*/
+
 __int64 __fastcall IommuRegisterInterfaceStateChangeCallback(
         void (*CallbackRoutine)(struct _IOMMU_INTERFACE_STATE_CHANGE* arg1, void* arg2);,
         __int64 a2,
