@@ -1,3 +1,5 @@
+// very interesting point that could contains some alternatives to infinity hook, this would require more analysis
+
 VOID __stdcall EtwpLogKernelEvent(
         _EVENT_DATA_DESCRIPTOR *EventData,
         _ETW_SILODRIVERSTATE *SiloState,
