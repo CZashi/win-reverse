@@ -1,3 +1,5 @@
+// interesting for offensive purposes but it needs more analysis
+
 _POP_WATCHDOG *__fastcall PopSetWatchdog(_POP_WATCHDOG *Instance, const _PO_WATCHDOG_CONFIG *Config, UINT8 Release)
 {
   _POP_WATCHDOG *v5; // rbx
