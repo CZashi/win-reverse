@@ -1,4 +1,4 @@
-__int64 ACPIInterruptDispatchEventDpc()
+__int64 AcpiInterruptDispatchEventDpc()
 {
   char v0; // r14
   size_t v1; // r15
